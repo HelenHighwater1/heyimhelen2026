@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --blueprint-primary: #002c8c;
+  --blueprint-ink: #0a2540;
+  --blueprint-line: #1e3a5f;
+  --blueprint-paper: #f5f9fc;
+  --blueprint-canvas: #e8ecf7;
+  --font-amatic: "Amatic SC", cursive;
+}
+
+/* Amatic SC – used for tabs and main titles (loaded via link in layout head) */
+.font-amatic {
+  font-family: var(--font-amatic);
+}
+
+/* Sketch double-border button – engineer/drafting style */
+.btn-sketch {
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    1px 1px 0 0 rgba(255, 255, 255, 0.35);
+}
+
+body {
+  background-color: var(--blueprint-canvas);
+  color: var(--blueprint-ink);
+}
+
+/* Blueprint grid: blue background, white grid lines */
+.bg-blueprint-grid {
+  background-color: var(--blueprint-primary);
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.28) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.28) 1px,
+      transparent 1px
+    );
+  background-size: 24px 24px;
+}
