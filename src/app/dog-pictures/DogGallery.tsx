@@ -19,8 +19,14 @@ export function DogGallery() {
       {dogPicturePaths.map((src, index) => (
         <div
           key={src}
-          className="mb-4 overflow-hidden rounded border-2 border-white/40 bg-white/10 shadow-sm"
+          className="maze-border relative mb-4 overflow-hidden bg-pac-black"
         >
+          {/* Corner pellet decorations */}
+          <div className="absolute left-2 top-2 z-10 h-1.5 w-1.5 rounded-full bg-pac-dot opacity-60" />
+          <div className="absolute right-2 top-2 z-10 h-1.5 w-1.5 rounded-full bg-pac-dot opacity-60" />
+          <div className="absolute bottom-2 left-2 z-10 h-1.5 w-1.5 rounded-full bg-pac-dot opacity-60" />
+          <div className="absolute bottom-2 right-2 z-10 h-1.5 w-1.5 rounded-full bg-pac-dot opacity-60" />
+
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={src}

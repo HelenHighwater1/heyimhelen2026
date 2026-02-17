@@ -1,15 +1,15 @@
-import { BlueprintSheet } from "@/components/BlueprintSheet";
+import { ArcadePanel } from "@/components/ArcadePanel";
 import { BioList } from "./BioList";
 
 export default function BioPage() {
   return (
-    <BlueprintSheet>
+    <ArcadePanel>
       <div className="space-y-8">
-        <h1 className="font-amatic text-5xl text-white md:text-6xl">
-          Personal Bio
+        <h1 className="font-pixel text-lg text-pac-yellow md:text-2xl">
+          PERSONAL BIO
         </h1>
         <BioList />
       </div>
-    </BlueprintSheet>
+    </ArcadePanel>
   );
 }

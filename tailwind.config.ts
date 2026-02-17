@@ -9,39 +9,42 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["'Amatic SC'", "cursive"],
+        pixel: ["'Press Start 2P'", "monospace"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       colors: {
-        blueprint: {
-          primary: "#002c8c",
-          ink: "#0a2540",
-          line: "#1e3a5f",
-          light: "#2d5a87",
-          pale: "#e8f0f7",
-          paper: "#f5f9fc",
-          canvas: "#e8ecf7",
-          accent: "#b8860b",
+        pac: {
+          black: "#000000",
+          blue: "#2121DE",
+          yellow: "#FFFF00",
+          dot: "#FFB8AE",
+          white: "#FFFFFF",
         },
-      },
-      backgroundImage: {
-        "grid-pattern":
-          "linear-gradient(to right, rgba(0, 44, 140, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 44, 140, 0.2) 1px, transparent 1px)",
-      },
-      backgroundSize: {
-        grid: "24px 24px",
-      },
-      transitionDuration: {
-        DEFAULT: "200ms",
+        ghost: {
+          red: "#FF0000",
+          pink: "#FFB8FF",
+          cyan: "#00FFFF",
+          orange: "#FFB852",
+        },
       },
       animation: {
         "fade-in": "fadeIn 0.4s ease-out forwards",
+        "pellet-pulse": "pellet-pulse 0.6s ease-in-out infinite alternate",
+        "ghost-float": "ghost-float 2s ease-in-out infinite",
+        "ghost-roam": "ghost-roam 18s linear infinite",
+        "ghost-roam-slow": "ghost-roam 25s linear infinite",
+        chomp: "chomp 0.3s steps(2) infinite",
+        "arcade-blink": "arcade-blink 1s steps(1) infinite",
+        "dot-eaten": "dot-eaten 0.25s ease-out forwards",
       },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0", transform: "translateY(8px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+      },
+      transitionDuration: {
+        DEFAULT: "200ms",
       },
     },
   },

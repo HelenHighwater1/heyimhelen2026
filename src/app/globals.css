@@ -3,44 +3,193 @@
 @tailwind utilities;
 
 :root {
-  --blueprint-primary: #002c8c;
-  --blueprint-ink: #0a2540;
-  --blueprint-line: #1e3a5f;
-  --blueprint-paper: #f5f9fc;
-  --blueprint-canvas: #e8ecf7;
-  --font-amatic: "Amatic SC", cursive;
+  --pac-black: #000000;
+  --pac-blue: #2121de;
+  --pac-yellow: #ffff00;
+  --pac-white: #ffffff;
+  --pac-dot: #ffb8ae;
+  --ghost-red: #ff0000;
+  --ghost-pink: #ffb8ff;
+  --ghost-cyan: #00ffff;
+  --ghost-orange: #ffb852;
+  --font-pixel: "Press Start 2P", monospace;
 }
 
-/* Amatic SC – used for tabs and main titles (loaded via link in layout head) */
-.font-amatic {
-  font-family: var(--font-amatic);
-}
-
-/* Sketch double-border button – engineer/drafting style */
-.btn-sketch {
-  border-radius: 2px;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
-    1px 1px 0 0 rgba(255, 255, 255, 0.35);
+/* Press Start 2P – used for headings, nav, arcade text */
+.font-pixel {
+  font-family: var(--font-pixel);
 }
 
 body {
-  background-color: var(--blueprint-canvas);
-  color: var(--blueprint-ink);
+  background-color: var(--pac-black);
+  color: var(--pac-white);
 }
 
-/* Blueprint grid: blue background, white grid lines */
-.bg-blueprint-grid {
-  background-color: var(--blueprint-primary);
-  background-image: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.28) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.28) 1px,
-      transparent 1px
-    );
-  background-size: 24px 24px;
+/* Arcade button glow effect */
+.btn-arcade {
+  border-radius: 4px;
+  box-shadow:
+    0 0 6px rgba(255, 255, 0, 0.4),
+    inset 0 0 4px rgba(255, 255, 0, 0.15);
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.btn-arcade:hover {
+  box-shadow:
+    0 0 14px rgba(255, 255, 0, 0.7),
+    inset 0 0 6px rgba(255, 255, 0, 0.25);
+  transform: scale(1.03);
+}
+
+/* CRT scanline effect */
+.crt-overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  border-radius: inherit;
+}
+
+/* CRT vignette (subtle dark corners) */
+.crt-vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+/* Maze wall border style */
+.maze-border {
+  border: 3px solid var(--pac-blue);
+  box-shadow:
+    inset 0 0 0 2px var(--pac-black),
+    inset 0 0 0 4px var(--pac-blue),
+    0 0 12px rgba(33, 33, 222, 0.3);
+  border-radius: 8px;
+}
+
+/* Pellet dot */
+.pellet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--pac-dot);
+}
+
+/* Power pellet (larger, glowing) */
+.power-pellet {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--pac-dot);
+  animation: pellet-pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes pellet-pulse {
+  0% {
+    opacity: 0.4;
+    box-shadow: 0 0 4px rgba(255, 184, 174, 0.3);
+  }
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255, 184, 174, 0.7);
+  }
+}
+
+/* Chomp animation for Pac-Man mouth */
+@keyframes chomp {
+  0% {
+    clip-path: polygon(100% 0%, 100% 100%, 50% 50%, 100% 0%);
+  }
+  50% {
+    clip-path: polygon(100% 0%, 100% 100%, 50% 75%, 50% 25%);
+  }
+  100% {
+    clip-path: polygon(100% 0%, 100% 100%, 50% 50%, 100% 0%);
+  }
+}
+
+/* Ghost float animation */
+@keyframes ghost-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Ghost roam across the screen */
+@keyframes ghost-roam {
+  0% {
+    transform: translateX(-80px);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.7;
+  }
+  95% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(calc(100vw + 80px));
+    opacity: 0;
+  }
+}
+
+/* Flashing arcade text */
+@keyframes arcade-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.arcade-blink {
+  animation: arcade-blink 1s steps(1) infinite;
+}
+
+/* Dot eaten shrink */
+@keyframes dot-eaten {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/* Fade in */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }

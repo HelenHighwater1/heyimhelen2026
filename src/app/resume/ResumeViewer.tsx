@@ -31,9 +31,9 @@ export function ResumeViewer({ pdfPath }: ResumeViewerProps) {
 
   return (
     <div ref={containerRef} className="w-full">
-      <div className="overflow-hidden rounded border border-blueprint-line/30 bg-white">
+      <div className="maze-border overflow-hidden bg-white">
         {error ? (
-          <div className="flex min-h-[400px] items-center justify-center p-8 text-center text-blueprint-line">
+          <div className="flex min-h-[400px] items-center justify-center p-8 text-center text-pac-blue">
             <p>
               Unable to load PDF. You can{" "}
               <a href={pdfPath} download className="underline">
@@ -48,8 +48,8 @@ export function ResumeViewer({ pdfPath }: ResumeViewerProps) {
             onLoadSuccess={({ numPages }) => setNumPages(numPages)}
             onLoadError={() => setError("Failed to load PDF")}
             loading={
-              <div className="flex min-h-[400px] items-center justify-center text-blueprint-line">
-                Loading…
+              <div className="flex min-h-[400px] items-center justify-center font-pixel text-xs text-pac-blue">
+                LOADING...
               </div>
             }
           >
