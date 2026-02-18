@@ -14,7 +14,7 @@ const nodes: NavNode[] = [
   { id: "resume", label: "resume", href: "/resume" },
   { id: "projects", label: "projects", href: "/projects" },
   { id: "bio", label: "bio", href: "/bio" },
-  { id: "dogs", label: "dogs", href: "/dog-pictures" },
+  { id: "doggo", label: "doggo", href: "/dog-pictures" },
 ];
 
 export function FlowchartNav() {
@@ -66,6 +66,13 @@ export function FlowchartNav() {
         const x = offsetX + i * (boxW + arrowLen);
         const isActive = node.href === currentPath;
 
+        // Group for hover effects
+        const group = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "g"
+        );
+        group.style.transition = "transform 0.12s ease, opacity 0.12s ease";
+
         const rect = rc.rectangle(x, cy - boxH / 2, boxW, boxH, {
           stroke: isActive ? "#4a90d9" : "#1e1e1e",
           strokeWidth: isActive ? 2.2 : 1.5,
@@ -74,7 +81,7 @@ export function FlowchartNav() {
           fill: isActive ? "rgba(74, 144, 217, 0.1)" : "transparent",
           fillStyle: "solid",
         });
-        svg.appendChild(rect);
+        group.appendChild(rect);
 
         const text = document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -91,7 +98,7 @@ export function FlowchartNav() {
         );
         text.setAttribute("class", "pointer-events-none select-none");
         text.textContent = node.label;
-        svg.appendChild(text);
+        group.appendChild(text);
 
         const hitArea = document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -112,7 +119,19 @@ export function FlowchartNav() {
           if (e.key === "Enter" || e.key === " ")
             currentRouter.push(node.href);
         });
-        svg.appendChild(hitArea);
+        hitArea.addEventListener("mouseenter", () => {
+          if (!isActive) {
+            group.style.transform = "translateY(-2px)";
+            group.style.opacity = "0.75";
+          }
+        });
+        hitArea.addEventListener("mouseleave", () => {
+          group.style.transform = "";
+          group.style.opacity = "";
+        });
+        group.appendChild(hitArea);
+
+        svg.appendChild(group);
 
         if (i < nodes.length - 1) {
           const arrowStartX = x + boxW + 2;

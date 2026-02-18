@@ -7,7 +7,7 @@ export default function DogPicturesPage() {
     <SketchPanel>
       <div className="space-y-6">
         <h1 className="font-sketch text-2xl text-sketch-text md:text-3xl">
-          dogs!
+          doggo!
         </h1>
         <p className="font-sketch text-sm text-sketch-text-muted">
           {dogPicturePaths.length} photo{dogPicturePaths.length !== 1 ? "s" : ""}

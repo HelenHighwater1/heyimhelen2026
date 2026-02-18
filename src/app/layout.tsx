@@ -53,9 +53,12 @@ export default function RootLayout({
         <div className="mx-auto flex min-h-screen max-w-[1100px] flex-col px-4 py-6 md:px-8 md:py-8">
           {/* Header */}
           <header className="mb-2 flex items-center justify-between px-1">
-            <h1 className="font-sketch text-lg tracking-wide text-sketch-text md:text-xl">
+            <a
+              href="/"
+              className="font-sketch text-lg tracking-wide text-sketch-text transition-opacity duration-150 hover:opacity-70 md:text-xl"
+            >
               helen highwater
-            </h1>
+            </a>
             <span className="font-sketch text-sm text-sketch-text-muted">
               fullstack engineer
             </span>

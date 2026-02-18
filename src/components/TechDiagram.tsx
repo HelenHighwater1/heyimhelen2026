@@ -16,21 +16,21 @@ const techBoxes: TechBox[] = [
     label: "Frontend",
     color: "#4a90d9",
     fillColor: "rgba(74, 144, 217, 0.08)",
-    items: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+    items: ["React", "Redux", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "Bootstrap"],
   },
   {
     id: "backend",
     label: "Backend",
     color: "#6ba368",
     fillColor: "rgba(107, 163, 104, 0.08)",
-    items: ["Node.js", "Express", "REST APIs", "GraphQL"],
+    items: ["Python", "Flask", "Ruby on Rails", "Node.js", "Express", "OpenAI API"],
   },
   {
     id: "database",
     label: "Database",
     color: "#e07a5f",
     fillColor: "rgba(224, 122, 95, 0.08)",
-    items: ["PostgreSQL", "MongoDB", "Redis", "Prisma"],
+    items: ["PostgreSQL", "MongoDB", "SQLAlchemy", "AWS S3"],
   },
 ];
 
@@ -104,6 +104,12 @@ export function TechDiagram() {
           bottomY: y + boxH,
         };
 
+        const group = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "g"
+        );
+        group.style.transition = "transform 0.12s ease, opacity 0.12s ease";
+
         const rect = rc.rectangle(x, y, boxW, boxH, {
           stroke: box.color,
           strokeWidth: 2,
@@ -112,7 +118,7 @@ export function TechDiagram() {
           fill: box.fillColor,
           fillStyle: "solid",
         });
-        svg.appendChild(rect);
+        group.appendChild(rect);
 
         const text = document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -129,7 +135,7 @@ export function TechDiagram() {
         );
         text.setAttribute("class", "pointer-events-none select-none");
         text.textContent = box.label;
-        svg.appendChild(text);
+        group.appendChild(text);
 
         const hitArea = document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -141,9 +147,17 @@ export function TechDiagram() {
         hitArea.setAttribute("height", String(boxH));
         hitArea.setAttribute("fill", "transparent");
         hitArea.setAttribute("class", "cursor-pointer");
-        hitArea.addEventListener("mouseenter", () => setHoveredBox(box.id));
-        hitArea.addEventListener("mouseleave", () => setHoveredBox(null));
-        svg.appendChild(hitArea);
+        hitArea.addEventListener("mouseenter", () => {
+          setHoveredBox(box.id);
+          group.style.transform = "translateY(-2px)";
+        });
+        hitArea.addEventListener("mouseleave", () => {
+          setHoveredBox(null);
+          group.style.transform = "";
+        });
+        group.appendChild(hitArea);
+
+        svg.appendChild(group);
 
         if (i < techBoxes.length - 1) {
           if (isMobile) {

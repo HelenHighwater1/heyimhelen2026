@@ -48,7 +48,11 @@ export function BioList() {
                   <circle cx="6" cy="6" r="2" fill={bulletColor} />
                 )}
               </svg>
-              <span className="font-sketch text-sm leading-relaxed text-sketch-text md:text-base">
+              <span
+                className={`font-sketch text-sm leading-relaxed md:text-base transition-colors duration-150 ${
+                  isHovered ? "text-sketch-blue" : "text-sketch-text"
+                }`}
+              >
                 {item.text}
               </span>
             </div>
