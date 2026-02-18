@@ -49,16 +49,6 @@ export default function ProjectsPage() {
 
                 {/* Links */}
                 <div className="mt-4 flex flex-wrap gap-5">
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="sketch-link font-sketch text-sm"
-                    >
-                      view code &rarr;
-                    </a>
-                  )}
                   {project.liveDemo && (
                     <a
                       href={project.liveDemo}
@@ -67,7 +57,17 @@ export default function ProjectsPage() {
                       className="sketch-link font-sketch text-sm"
                       style={{ color: "var(--sketch-green)" }}
                     >
-                      live demo &rarr;
+                      try it out &rarr;
+                    </a>
+                  )}
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="sketch-link font-sketch text-sm"
+                    >
+                      view code &rarr;
                     </a>
                   )}
                   {project.videoDemo && (
