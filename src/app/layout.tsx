@@ -28,6 +28,7 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin=""
         />
+        <link rel="icon" href="/images/favicon.png" type="image/png" />
         {/* Virgil — Excalidraw's hand-drawn font */}
         <link
           href="https://cdn.jsdelivr.net/npm/@excalidraw/excalidraw@0.17.0/dist/excalidraw-assets/Virgil.woff2"
