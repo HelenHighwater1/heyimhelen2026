@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { MazeNav } from "@/components/MazeNav";
-import { RoamingGhosts } from "@/components/RoamingGhosts";
+import { FlowchartNav } from "@/components/FlowchartNav";
 
 const sansFont = Inter({
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -29,35 +28,50 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin=""
         />
+        {/* Virgil — Excalidraw's hand-drawn font */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@excalidraw/excalidraw@0.17.0/dist/excalidraw-assets/Virgil.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin=""
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @font-face {
+                font-family: 'Virgil';
+                src: url('https://cdn.jsdelivr.net/npm/@excalidraw/excalidraw@0.17.0/dist/excalidraw-assets/Virgil.woff2') format('woff2');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+              }
+            `,
+          }}
         />
       </head>
-      <body className="min-h-screen bg-pac-black font-sans text-white antialiased">
-        <RoamingGhosts />
-        <div className="mx-auto flex min-h-screen max-w-[1400px] flex-col px-4 py-4 md:px-6 md:py-6">
-          {/* HUD Bar */}
-          <header className="mb-2 flex items-center justify-between px-2">
-            <h1 className="font-pixel text-xs tracking-wide text-pac-yellow md:text-sm">
-              HELEN HIGHWATER
+      <body className="dot-grid min-h-screen bg-sketch-bg font-sans text-sketch-text antialiased">
+        <div className="mx-auto flex min-h-screen max-w-[1100px] flex-col px-4 py-6 md:px-8 md:py-8">
+          {/* Header */}
+          <header className="mb-2 flex items-center justify-between px-1">
+            <h1 className="font-sketch text-lg tracking-wide text-sketch-text md:text-xl">
+              helen highwater
             </h1>
-            <span className="font-pixel text-[10px] text-white/60 md:text-xs">
-              HIGH SCORE: 999999
+            <span className="font-sketch text-sm text-sketch-text-muted">
+              fullstack engineer
             </span>
           </header>
 
-          {/* Maze Navigation */}
-          <div className="mb-4">
-            <MazeNav />
+          {/* Navigation */}
+          <div className="mb-6">
+            <FlowchartNav />
           </div>
 
-          {/* Main content — game screen */}
+          {/* Main content */}
           <main className="flex-1">{children}</main>
 
-          {/* Footer — arcade credit */}
-          <footer className="mt-6 pb-2 text-center font-pixel text-[8px] uppercase tracking-widest text-white/30">
-            &copy; 2026 &middot; Insert coin to continue
+          {/* Footer */}
+          <footer className="mt-8 pb-2 text-center font-sketch text-xs text-sketch-text-muted">
+            &copy; 2026 Helen Highwater &middot; sketched with care
           </footer>
         </div>
       </body>

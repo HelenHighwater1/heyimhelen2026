@@ -1,15 +1,15 @@
-import { ArcadePanel } from "@/components/ArcadePanel";
+import { SketchPanel } from "@/components/SketchPanel";
 import { BioList } from "./BioList";
 
 export default function BioPage() {
   return (
-    <ArcadePanel>
+    <SketchPanel>
       <div className="space-y-8">
-        <h1 className="font-pixel text-lg text-pac-yellow md:text-2xl">
-          PERSONAL BIO
+        <h1 className="font-sketch text-2xl text-sketch-text md:text-3xl">
+          about me
         </h1>
         <BioList />
       </div>
-    </ArcadePanel>
+    </SketchPanel>
   );
 }

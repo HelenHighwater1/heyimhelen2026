@@ -3,182 +3,107 @@
 @tailwind utilities;
 
 :root {
-  --pac-black: #000000;
-  --pac-blue: #2121de;
-  --pac-yellow: #ffff00;
-  --pac-white: #ffffff;
-  --pac-dot: #ffb8ae;
-  --ghost-red: #ff0000;
-  --ghost-pink: #ffb8ff;
-  --ghost-cyan: #00ffff;
-  --ghost-orange: #ffb852;
-  --font-pixel: "Press Start 2P", monospace;
-}
-
-/* Press Start 2P – used for headings, nav, arcade text */
-.font-pixel {
-  font-family: var(--font-pixel);
+  --sketch-bg: #f8f7f4;
+  --sketch-bg-warm: #f3f1ec;
+  --sketch-stroke: #1e1e1e;
+  --sketch-stroke-light: #b0aeaa;
+  --sketch-text: #333333;
+  --sketch-text-muted: #777777;
+  --sketch-blue: #4a90d9;
+  --sketch-coral: #e07a5f;
+  --sketch-green: #6ba368;
+  --sketch-purple: #8b5cf6;
+  --sketch-amber: #d4a843;
 }
 
 body {
-  background-color: var(--pac-black);
-  color: var(--pac-white);
+  background-color: var(--sketch-bg);
+  color: var(--sketch-text);
 }
 
-/* Arcade button glow effect */
-.btn-arcade {
+/* Dot-grid background pattern (like graph paper / Excalidraw canvas) */
+.dot-grid {
+  background-image: radial-gradient(
+    circle,
+    var(--sketch-stroke-light) 0.8px,
+    transparent 0.8px
+  );
+  background-size: 24px 24px;
+}
+
+/* Cross-hatch pattern (alternative for cards) */
+.cross-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 0, 0, 0.02) 8px,
+    rgba(0, 0, 0, 0.02) 9px
+  );
+}
+
+/* Hand-drawn style button */
+.btn-sketch {
+  font-family: "Virgil", "Segoe Print", "Comic Sans MS", cursive;
+  border: 2px solid var(--sketch-stroke);
   border-radius: 4px;
-  box-shadow:
-    0 0 6px rgba(255, 255, 0, 0.4),
-    inset 0 0 4px rgba(255, 255, 0, 0.15);
-  transition: box-shadow 0.2s, transform 0.15s;
-}
-.btn-arcade:hover {
-  box-shadow:
-    0 0 14px rgba(255, 255, 0, 0.7),
-    inset 0 0 6px rgba(255, 255, 0, 0.25);
-  transform: scale(1.03);
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  color: var(--sketch-text);
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  position: relative;
+  outline: 1px solid rgba(30, 30, 30, 0.05);
+  outline-offset: 1.5px;
 }
 
-/* CRT scanline effect */
-.crt-overlay {
-  pointer-events: none;
+.btn-sketch:hover {
+  background-color: rgba(74, 144, 217, 0.08);
+  transform: translate(-1px, -1px) rotate(-0.5deg);
+}
+
+.btn-sketch:active {
+  transform: translate(0, 0) rotate(0deg);
+}
+
+/* Annotation callout (for bio hover + tech diagram) */
+.annotation-callout {
+  position: relative;
+  font-family: "Virgil", "Segoe Print", "Comic Sans MS", cursive;
+  border: 2px solid var(--sketch-stroke);
+  border-radius: 4px;
+  background-color: #fffef9;
+  padding: 0.75rem 1rem;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.05);
+  /* Slightly imperfect border to mimic hand-drawn */
+  outline: 1px solid rgba(30, 30, 30, 0.06);
+  outline-offset: 1.5px;
+  transform: rotate(-0.3deg);
+}
+
+.annotation-callout::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  z-index: 10;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent 2px,
-    rgba(0, 0, 0, 0.08) 2px,
-    rgba(0, 0, 0, 0.08) 4px
-  );
-  border-radius: inherit;
-}
-
-/* CRT vignette (subtle dark corners) */
-.crt-vignette {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 9;
-  border-radius: inherit;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 60%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
-}
-
-/* Maze wall border style */
-.maze-border {
-  border: 3px solid var(--pac-blue);
-  box-shadow:
-    inset 0 0 0 2px var(--pac-black),
-    inset 0 0 0 4px var(--pac-blue),
-    0 0 12px rgba(33, 33, 222, 0.3);
-  border-radius: 8px;
-}
-
-/* Pellet dot */
-.pellet {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--pac-dot);
-}
-
-/* Power pellet (larger, glowing) */
-.power-pellet {
+  top: -8px;
+  left: 20px;
   width: 14px;
   height: 14px;
-  border-radius: 50%;
-  background-color: var(--pac-dot);
-  animation: pellet-pulse 0.6s ease-in-out infinite alternate;
+  background-color: #fffef9;
+  border-top: 2px solid var(--sketch-stroke);
+  border-left: 2px solid var(--sketch-stroke);
+  transform: rotate(45deg);
 }
 
-@keyframes pellet-pulse {
-  0% {
-    opacity: 0.4;
-    box-shadow: 0 0 4px rgba(255, 184, 174, 0.3);
-  }
-  100% {
-    opacity: 1;
-    box-shadow: 0 0 10px rgba(255, 184, 174, 0.7);
-  }
+.annotation-callout.callout-center::before {
+  left: 50%;
+  margin-left: -7px;
 }
 
-/* Chomp animation for Pac-Man mouth */
-@keyframes chomp {
-  0% {
-    clip-path: polygon(100% 0%, 100% 100%, 50% 50%, 100% 0%);
-  }
-  50% {
-    clip-path: polygon(100% 0%, 100% 100%, 50% 75%, 50% 25%);
-  }
-  100% {
-    clip-path: polygon(100% 0%, 100% 100%, 50% 50%, 100% 0%);
-  }
+/* Fade in utility */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }
 
-/* Ghost float animation */
-@keyframes ghost-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-/* Ghost roam across the screen */
-@keyframes ghost-roam {
-  0% {
-    transform: translateX(-80px);
-    opacity: 0;
-  }
-  5% {
-    opacity: 0.7;
-  }
-  95% {
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateX(calc(100vw + 80px));
-    opacity: 0;
-  }
-}
-
-/* Flashing arcade text */
-@keyframes arcade-blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-
-.arcade-blink {
-  animation: arcade-blink 1s steps(1) infinite;
-}
-
-/* Dot eaten shrink */
-@keyframes dot-eaten {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0);
-    opacity: 0;
-  }
-}
-
-/* Fade in */
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -190,6 +115,29 @@ body {
   }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+/* Sketch link style */
+.sketch-link {
+  font-family: "Virgil", "Segoe Print", "Comic Sans MS", cursive;
+  color: var(--sketch-blue);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.sketch-link:hover {
+  border-bottom-color: var(--sketch-blue);
+}
+
+/* Tag pill for technologies */
+.sketch-tag {
+  display: inline-block;
+  font-family: "Virgil", "Segoe Print", "Comic Sans MS", cursive;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border: 1.5px solid var(--sketch-stroke-light);
+  border-radius: 4px;
+  color: var(--sketch-text-muted);
+  background: transparent;
+  outline: 1px solid rgba(30, 30, 30, 0.03);
+  outline-offset: 1px;
 }

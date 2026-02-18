@@ -1,20 +1,19 @@
-import { ArcadePanel } from "@/components/ArcadePanel";
+import { SketchPanel } from "@/components/SketchPanel";
 import { DogGallery } from "./DogGallery";
 import { dogPicturePaths } from "@/content/dogPictures";
 
 export default function DogPicturesPage() {
   return (
-    <ArcadePanel>
+    <SketchPanel>
       <div className="space-y-6">
-        <h1 className="font-pixel text-lg text-pac-yellow md:text-2xl">
-          BONUS ROUND
+        <h1 className="font-sketch text-2xl text-sketch-text md:text-3xl">
+          dogs!
         </h1>
-        <p className="font-pixel text-[9px] text-white/60">
-          {dogPicturePaths.length} PHOTO{dogPicturePaths.length !== 1 ? "S" : ""}{" "}
-          COLLECTED
+        <p className="font-sketch text-sm text-sketch-text-muted">
+          {dogPicturePaths.length} photo{dogPicturePaths.length !== 1 ? "s" : ""}
         </p>
         <DogGallery />
       </div>
-    </ArcadePanel>
+    </SketchPanel>
   );
 }

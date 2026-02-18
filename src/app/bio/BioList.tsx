@@ -2,23 +2,17 @@
 
 import { useState } from "react";
 import { bioItems } from "@/content/bio";
-import { GhostSprite } from "@/components/GhostSprite";
 
-const ghostColors: ("red" | "pink" | "cyan" | "orange")[] = [
-  "red",
-  "pink",
-  "cyan",
-  "orange",
-];
+const bulletColors = ["#4a90d9", "#e07a5f", "#6ba368", "#8b5cf6", "#d4a843"];
 
 export function BioList() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <ul className="space-y-5">
+    <ul className="space-y-6">
       {bioItems.map((item, index) => {
         const isHovered = hoveredIndex === index;
-        const gColor = ghostColors[index % ghostColors.length];
+        const bulletColor = bulletColors[index % bulletColors.length];
         return (
           <li
             key={index}
@@ -26,20 +20,40 @@ export function BioList() {
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            <div className="flex items-start gap-3">
-              {/* Pac-Man dot — gets "eaten" on hover */}
-              <span
-                className={`mt-2 inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-pac-dot transition-all duration-200 ${
-                  isHovered ? "scale-0 opacity-0" : "scale-100 opacity-100"
-                }`}
+            <div className="flex items-start gap-3 cursor-pointer">
+              {/* Hand-drawn style bullet — a small sketchy circle */}
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                className="mt-1.5 shrink-0"
                 aria-hidden
-              />
-              <span className="text-sm leading-relaxed text-white/90 md:text-base">
+              >
+                <circle
+                  cx="6"
+                  cy="6"
+                  r="4"
+                  fill="none"
+                  stroke={bulletColor}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeDasharray={isHovered ? "none" : "none"}
+                  style={{
+                    transform: isHovered ? "scale(1.3)" : "scale(1)",
+                    transformOrigin: "center",
+                    transition: "transform 0.15s ease",
+                  }}
+                />
+                {isHovered && (
+                  <circle cx="6" cy="6" r="2" fill={bulletColor} />
+                )}
+              </svg>
+              <span className="font-sketch text-sm leading-relaxed text-sketch-text md:text-base">
                 {item.text}
               </span>
             </div>
 
-            {/* Annotation — ghost thought bubble */}
+            {/* Annotation — Excalidraw-style callout */}
             {item.annotation && (
               <div
                 className={`absolute left-6 top-full z-30 mt-2 w-full max-w-md transition-all duration-200 ease-out md:left-8 ${
@@ -48,13 +62,10 @@ export function BioList() {
                     : "pointer-events-none -translate-y-1 opacity-0"
                 }`}
               >
-                <div className="relative flex items-start gap-3 rounded-lg border-2 border-pac-blue bg-pac-black px-4 py-3 shadow-[0_0_12px_rgba(33,33,222,0.3)]">
-                  <GhostSprite color={gColor} size={22} className="shrink-0 mt-0.5" />
-                  <p className="text-xs leading-relaxed text-white/90 md:text-sm">
+                <div className="annotation-callout">
+                  <p className="font-sketch text-xs leading-relaxed text-sketch-text-muted md:text-sm">
                     {item.annotation}
                   </p>
-                  {/* Pointer triangle */}
-                  <div className="absolute -top-2 left-6 h-3 w-3 rotate-45 border-l-2 border-t-2 border-pac-blue bg-pac-black" />
                 </div>
               </div>
             )}
