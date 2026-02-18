@@ -65,22 +65,23 @@ export function TechDiagram() {
       const gapX = isMobile ? 0 : 60;
       const gapY = isMobile ? 50 : 0;
 
+      const pad = 6;
       let svgW: number;
       let svgH: number;
 
       if (isMobile) {
         svgW = containerWidth;
-        svgH = techBoxes.length * boxH + (techBoxes.length - 1) * gapY + 20;
+        svgH = techBoxes.length * boxH + (techBoxes.length - 1) * gapY + 20 + pad * 2;
       } else {
-        svgW = techBoxes.length * boxW + (techBoxes.length - 1) * gapX;
-        svgH = boxH + 20;
+        svgW = techBoxes.length * boxW + (techBoxes.length - 1) * gapX + pad * 2;
+        svgH = boxH + 20 + pad * 2;
       }
 
       setDimensions({ width: svgW, height: svgH });
 
       svg.setAttribute("width", String(svgW));
       svg.setAttribute("height", String(svgH));
-      svg.setAttribute("viewBox", `0 0 ${svgW} ${svgH}`);
+      svg.setAttribute("viewBox", `${-pad} ${-pad} ${svgW} ${svgH}`);
 
       while (svg.firstChild) svg.removeChild(svg.firstChild);
 

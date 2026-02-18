@@ -1,6 +1,6 @@
 import { SketchPanel } from "@/components/SketchPanel";
 import { DogGallery } from "./DogGallery";
-import { dogPicturePaths } from "@/content/dogPictures";
+import { dogPhotos } from "@/content/dogPictures";
 
 export default function DogPicturesPage() {
   return (
@@ -10,7 +10,7 @@ export default function DogPicturesPage() {
           doggo!
         </h1>
         <p className="font-sketch text-sm text-sketch-text-muted">
-          {dogPicturePaths.length} photo{dogPicturePaths.length !== 1 ? "s" : ""}
+          {dogPhotos.length} photo{dogPhotos.length !== 1 ? "s" : ""}
         </p>
         <DogGallery />
       </div>

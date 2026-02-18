@@ -66,12 +66,26 @@ export function FlowchartNav() {
         const x = offsetX + i * (boxW + arrowLen);
         const isActive = node.href === currentPath;
 
-        // Group for hover effects
         const group = document.createElementNS(
           "http://www.w3.org/2000/svg",
           "g"
         );
-        group.style.transition = "transform 0.12s ease, opacity 0.12s ease";
+        group.style.transition = "transform 0.12s ease";
+
+        // Background fill rect for hover highlight
+        const hoverBg = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "rect"
+        );
+        hoverBg.setAttribute("x", String(x));
+        hoverBg.setAttribute("y", String(cy - boxH / 2));
+        hoverBg.setAttribute("width", String(boxW));
+        hoverBg.setAttribute("height", String(boxH));
+        hoverBg.setAttribute("rx", "4");
+        hoverBg.setAttribute("fill", "rgba(74, 144, 217, 0.08)");
+        hoverBg.setAttribute("opacity", isActive ? "1" : "0");
+        hoverBg.style.transition = "opacity 0.15s ease";
+        group.appendChild(hoverBg);
 
         const rect = rc.rectangle(x, cy - boxH / 2, boxW, boxH, {
           stroke: isActive ? "#4a90d9" : "#1e1e1e",
@@ -122,12 +136,14 @@ export function FlowchartNav() {
         hitArea.addEventListener("mouseenter", () => {
           if (!isActive) {
             group.style.transform = "translateY(-2px)";
-            group.style.opacity = "0.75";
+            hoverBg.setAttribute("opacity", "1");
           }
         });
         hitArea.addEventListener("mouseleave", () => {
           group.style.transform = "";
-          group.style.opacity = "";
+          if (!isActive) {
+            hoverBg.setAttribute("opacity", "0");
+          }
         });
         group.appendChild(hitArea);
 

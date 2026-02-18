@@ -99,6 +99,12 @@ body {
   margin-left: -7px;
 }
 
+.annotation-callout.callout-bottom::before {
+  top: -8px;
+  left: 50%;
+  margin-left: -7px;
+}
+
 /* Fade in utility */
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out forwards;
