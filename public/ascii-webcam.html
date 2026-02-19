@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCII Webcam</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #111;
+    color: #ccc;
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Utility ── */
+  .hidden { display: none !important; }
+
+  /* ── Controls Bar ── */
+  #controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    padding: 14px 32px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #2a2a2a;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    z-index: 10;
+  }
+
+  #controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a6040;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  #controls input[type="range"] {
+    width: 90px;
+    accent-color: #e8a840;
+    cursor: pointer;
+  }
+
+  #controls select {
+    background: #111;
+    color: #e8a840;
+    border: 1px solid #3a2e1a;
+    border-radius: 3px;
+    padding: 3px 6px;
+    font-size: 11px;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+  }
+
+  #controls select option {
+    background: #1a1a1a;
+    color: #e8a840;
+  }
+
+  #controls button {
+    background: transparent;
+    color: #9a7840;
+    border: 1px solid #3a2e1a;
+    border-radius: 3px;
+    padding: 4px 14px;
+    font-size: 11px;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+
+  #controls button:hover {
+    color: #e8a840;
+    border-color: #7a5a20;
+    background: rgba(232, 168, 64, 0.06);
+  }
+
+  #controls button.active {
+    color: #e8a840;
+    border-color: #e8a840;
+    background: rgba(232, 168, 64, 0.12);
+  }
+
+  #controls .divider {
+    width: 1px;
+    height: 20px;
+    background: #2a2a2a;
+    flex-shrink: 0;
+  }
+
+  .control-value {
+    color: #e8a840;
+    min-width: 22px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Output area ── */
+  #output {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── ASCII Output (mono) ── */
+  #ascii {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    line-height: 1;
+    letter-spacing: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    white-space: pre;
+  }
+
+  /* ── Color Canvas Output ── */
+  #colorCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #111;
+  }
+
+  /* ── Error Overlay ── */
+  #error {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    color: #f44;
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    z-index: 100;
+  }
+
+  #error.visible {
+    display: flex;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hidden media elements -->
+<video id="video" autoplay playsinline style="display:none;"></video>
+<canvas id="canvas" style="display:none;"></canvas>
+
+<!-- Controls bar -->
+<div id="controls">
+  <label>
+    Cols
+    <input type="range" id="colsSlider" min="40" max="300" value="200">
+    <span class="control-value" id="colsValue">200</span>
+  </label>
+
+  <label>
+    Font
+    <input type="range" id="fontSlider" min="4" max="16" value="12">
+    <span class="control-value" id="fontValue">12</span>px
+  </label>
+
+  <label>
+    FPS
+    <input type="range" id="fpsSlider" min="5" max="30" value="15">
+    <span class="control-value" id="fpsValue">15</span>
+  </label>
+
+  <label>
+    Ramp
+    <select id="rampSelect">
+      <option value="short">Short (.:#@)</option>
+      <option value="medium" selected>Medium ( .:-=+*#%@)</option>
+      <option value="long">Long (70 chars)</option>
+    </select>
+  </label>
+
+  <div class="divider"></div>
+
+  <button id="invertBtn">Invert</button>
+  <button id="colorBtn">Color</button>
+  <button id="edgeBtn">Edges</button>
+
+  <div class="divider"></div>
+
+  <button id="copyBtn">Copy</button>
+</div>
+
+<!-- Output area: holds both the mono <pre> and the color <canvas> -->
+<div id="output">
+  <pre id="ascii"></pre>
+  <canvas id="colorCanvas" class="hidden"></canvas>
+</div>
+
+<!-- Error overlay -->
+<div id="error">
+  <div>
+    <p>📷 Camera access denied or unavailable.</p>
+    <p style="margin-top:12px;font-size:14px;color:#aaa;">Please allow camera access and reload the page.</p>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// Elements
+// ─────────────────────────────────────────────
+const video       = document.getElementById('video');
+const canvas      = document.getElementById('canvas');
+const ctx         = canvas.getContext('2d', { willReadFrequently: true });
+const asciiPre    = document.getElementById('ascii');
+const colorCanvas = document.getElementById('colorCanvas');
+const colorCtx    = colorCanvas.getContext('2d');
+const errorDiv    = document.getElementById('error');
+
+const colsSlider  = document.getElementById('colsSlider');
+const fontSlider  = document.getElementById('fontSlider');
+const fpsSlider   = document.getElementById('fpsSlider');
+const rampSelect  = document.getElementById('rampSelect');
+const invertBtn   = document.getElementById('invertBtn');
+const colorBtn    = document.getElementById('colorBtn');
+const edgeBtn     = document.getElementById('edgeBtn');
+const copyBtn     = document.getElementById('copyBtn');
+
+const colsValue = document.getElementById('colsValue');
+const fontValue = document.getElementById('fontValue');
+const fpsValue  = document.getElementById('fpsValue');
+
+// ─────────────────────────────────────────────
+// Character ramps
+// ─────────────────────────────────────────────
+const RAMPS = {
+  short:  ' .:#@',
+  medium: ' .:-=+*#%@',
+  long:   ' .\'`^",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
+};
+
+// ─────────────────────────────────────────────
+// Settings (mutable state)
+// ─────────────────────────────────────────────
+let cols       = 200;
+let rows       = 56;
+let fontSize   = 12;
+let targetFPS  = 15;
+let ramp       = RAMPS.medium;
+let inverted   = false;
+let colorMode  = false;
+let edgeMode   = false;
+
+// Stores the last plain-text ASCII frame for clipboard copy in either mode
+let lastAsciiText = '';
+
+let videoWidth    = 0;
+let videoHeight   = 0;
+let lastFrameTime = 0;
+let animFrameId   = null;
+
+// ─────────────────────────────────────────────
+// Initialization
+// ─────────────────────────────────────────────
+async function init() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = stream;
+
+    await new Promise((resolve) => {
+      video.onloadedmetadata = () => {
+        video.play();
+        resolve();
+      };
+    });
+
+    videoWidth  = video.videoWidth;
+    videoHeight = video.videoHeight;
+
+    updateSettings();
+    renderLoop(0);
+  } catch (err) {
+    console.error('Camera error:', err);
+    errorDiv.classList.add('visible');
+  }
+}
+
+// ─────────────────────────────────────────────
+// Settings update (called on any control change)
+// ─────────────────────────────────────────────
+function updateSettings() {
+  if (videoWidth === 0 || videoHeight === 0) return;
+
+  const aspectRatio = videoWidth / videoHeight;
+  // Characters are roughly 2x taller than wide, so we halve the row count
+  rows = Math.round(cols / aspectRatio * 0.5);
+
+  // Resize hidden sample canvas (1 pixel per ASCII cell)
+  canvas.width  = cols;
+  canvas.height = rows;
+
+  // Apply font size to the mono pre element
+  asciiPre.style.fontSize = fontSize + 'px';
+
+  // Resize color canvas to match character grid in pixels
+  const charW = fontSize * 0.6;
+  const charH = fontSize;
+  colorCanvas.width  = Math.round(cols * charW);
+  colorCanvas.height = Math.round(rows * charH);
+}
+
+// ─────────────────────────────────────────────
+// Edge detection — Sobel filter
+// Returns a Float32Array of gradient magnitudes (0-255) per pixel
+// ─────────────────────────────────────────────
+function applyEdgeDetection(data, w, h) {
+  const magnitudes = new Float32Array(w * h);
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      // Sample luminance for a 3x3 neighbourhood (clamp to borders)
+      const lum = (px, py) => {
+        const cx = Math.max(0, Math.min(w - 1, px));
+        const cy = Math.max(0, Math.min(h - 1, py));
+        const i  = (cy * w + cx) * 4;
+        return 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+      };
+
+      // Sobel X kernel
+      const gx = (
+        -1 * lum(x - 1, y - 1) + 1 * lum(x + 1, y - 1) +
+        -2 * lum(x - 1, y)     + 2 * lum(x + 1, y) +
+        -1 * lum(x - 1, y + 1) + 1 * lum(x + 1, y + 1)
+      );
+
+      // Sobel Y kernel
+      const gy = (
+         1 * lum(x - 1, y - 1) + 2 * lum(x, y - 1) + 1 * lum(x + 1, y - 1) +
+        -1 * lum(x - 1, y + 1) - 2 * lum(x, y + 1) - 1 * lum(x + 1, y + 1)
+      );
+
+      magnitudes[y * w + x] = Math.min(255, Math.sqrt(gx * gx + gy * gy));
+    }
+  }
+
+  return magnitudes;
+}
+
+// ─────────────────────────────────────────────
+// Render loop
+// ─────────────────────────────────────────────
+function renderLoop(timestamp) {
+  animFrameId = requestAnimationFrame(renderLoop);
+
+  // FPS throttling
+  const elapsed = timestamp - lastFrameTime;
+  const frameInterval = 1000 / targetFPS;
+  if (elapsed < frameInterval) return;
+  lastFrameTime = timestamp - (elapsed % frameInterval);
+
+  // Draw video frame onto the tiny canvas (mirrored)
+  ctx.save();
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, -cols, 0, cols, rows);
+  ctx.restore();
+
+  // Read pixel data from small canvas
+  const imageData = ctx.getImageData(0, 0, cols, rows);
+
+  // Compute per-pixel brightness values (raw luminance or Sobel magnitude)
+  const brightness = edgeMode
+    ? applyEdgeDetection(imageData.data, cols, rows)
+    : null; // null = use inline luminance
+
+  if (colorMode) {
+    drawColorAscii(imageData, brightness);
+  } else {
+    asciiPre.textContent = buildAscii(imageData, brightness);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Mono ASCII conversion
+// brightness: Float32Array from Sobel, or null to use raw luminance
+// ─────────────────────────────────────────────
+function buildAscii(imageData, brightness) {
+  const data    = imageData.data;
+  const rampLen = ramp.length;
+  let result    = '';
+
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const idx = y * cols + x;
+      let lum;
+      if (brightness) {
+        lum = brightness[idx];
+      } else {
+        const i = idx * 4;
+        lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+      }
+
+      let charIndex = Math.floor((lum / 255) * (rampLen - 1));
+      if (inverted) charIndex = rampLen - 1 - charIndex;
+      result += ramp[charIndex];
+    }
+    if (y < rows - 1) result += '\n';
+  }
+
+  lastAsciiText = result;
+  return result;
+}
+
+// ─────────────────────────────────────────────
+// Color ASCII rendering onto colorCanvas
+// ─────────────────────────────────────────────
+function drawColorAscii(imageData, brightness) {
+  const data    = imageData.data;
+  const rampLen = ramp.length;
+  const charW   = fontSize * 0.6;
+  const charH   = fontSize;
+
+  colorCtx.clearRect(0, 0, colorCanvas.width, colorCanvas.height);
+  colorCtx.font = `${fontSize}px 'Courier New', Courier, monospace`;
+  colorCtx.textBaseline = 'top';
+
+  const textRows = [];
+
+  for (let y = 0; y < rows; y++) {
+    let textRow = '';
+    for (let x = 0; x < cols; x++) {
+      const idx = y * cols + x;
+      const i   = idx * 4;
+      const r   = data[i];
+      const g   = data[i + 1];
+      const b   = data[i + 2];
+
+      let lum;
+      if (brightness) {
+        lum = brightness[idx];
+      } else {
+        lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      }
+
+      let charIndex = Math.floor((lum / 255) * (rampLen - 1));
+      if (inverted) charIndex = rampLen - 1 - charIndex;
+      const ch = ramp[charIndex];
+
+      colorCtx.fillStyle = `rgb(${r},${g},${b})`;
+      colorCtx.fillText(ch, x * charW, y * charH);
+      textRow += ch;
+    }
+    textRows.push(textRow);
+  }
+
+  lastAsciiText = textRows.join('\n');
+}
+
+// ─────────────────────────────────────────────
+// Control event handlers
+// ─────────────────────────────────────────────
+colsSlider.addEventListener('input', () => {
+  cols = parseInt(colsSlider.value, 10);
+  colsValue.textContent = cols;
+  updateSettings();
+});
+
+fontSlider.addEventListener('input', () => {
+  fontSize = parseInt(fontSlider.value, 10);
+  fontValue.textContent = fontSize;
+  updateSettings();
+});
+
+fpsSlider.addEventListener('input', () => {
+  targetFPS = parseInt(fpsSlider.value, 10);
+  fpsValue.textContent = targetFPS;
+});
+
+rampSelect.addEventListener('change', () => {
+  ramp = RAMPS[rampSelect.value];
+});
+
+invertBtn.addEventListener('click', () => {
+  inverted = !inverted;
+  invertBtn.classList.toggle('active', inverted);
+});
+
+colorBtn.addEventListener('click', () => {
+  colorMode = !colorMode;
+  colorBtn.classList.toggle('active', colorMode);
+  if (colorMode) {
+    asciiPre.classList.add('hidden');
+    colorCanvas.classList.remove('hidden');
+  } else {
+    colorCanvas.classList.add('hidden');
+    asciiPre.classList.remove('hidden');
+  }
+});
+
+edgeBtn.addEventListener('click', () => {
+  edgeMode = !edgeMode;
+  edgeBtn.classList.toggle('active', edgeMode);
+});
+
+copyBtn.addEventListener('click', async () => {
+  const text = colorMode ? lastAsciiText : asciiPre.textContent;
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    copyBtn.textContent = 'Copied!';
+    copyBtn.classList.add('active');
+    setTimeout(() => {
+      copyBtn.textContent = 'Copy';
+      copyBtn.classList.remove('active');
+    }, 1500);
+  } catch (err) {
+    console.error('Clipboard error:', err);
+    copyBtn.textContent = 'Error';
+    setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1500);
+  }
+});
+
+// Responsive: recalculate on window resize
+window.addEventListener('resize', () => {
+  updateSettings();
+});
+
+// ─────────────────────────────────────────────
+// Start
+// ─────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

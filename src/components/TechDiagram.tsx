@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 
 interface TechBox {
   id: string;
@@ -45,6 +46,19 @@ export function TechDiagram() {
   const [hoveredBox, setHoveredBox] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [boxPositions, setBoxPositions] = useState<Record<string, BoxPosition>>({});
+  const [showAsciiCam, setShowAsciiCam] = useState(false);
+
+  const openAsciiCam = useCallback(() => setShowAsciiCam(true), []);
+  const closeAsciiCam = useCallback(() => setShowAsciiCam(false), []);
+  const openAsciiCamRef = useRef(openAsciiCam);
+  openAsciiCamRef.current = openAsciiCam;
+
+  useEffect(() => {
+    if (!showAsciiCam) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeAsciiCam(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showAsciiCam, closeAsciiCam]);
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -148,6 +162,9 @@ export function TechDiagram() {
         hitArea.setAttribute("height", String(boxH));
         hitArea.setAttribute("fill", "transparent");
         hitArea.setAttribute("class", "cursor-pointer");
+        if (box.id === "frontend") {
+          hitArea.addEventListener("click", () => openAsciiCamRef.current());
+        }
         hitArea.addEventListener("mouseenter", () => {
           setHoveredBox(box.id);
           group.style.transform = "translateY(-2px)";
@@ -247,6 +264,37 @@ export function TechDiagram() {
 
   return (
     <div ref={containerRef} className="w-full">
+      {showAsciiCam && typeof document !== "undefined" && createPortal(
+        <div
+          className="animate-fade-in fixed inset-0 z-[9999] flex flex-col bg-black"
+          role="dialog"
+          aria-modal="true"
+          aria-label="ASCII Webcam"
+        >
+          {/* Top bar — matches the webcam's own controls bar so they read as one strip */}
+          <div
+            className="flex flex-shrink-0 items-center justify-end px-8"
+            style={{ background: "#1a1a1a", borderBottom: "1px solid #2a2a2a", height: "49px" }}
+          >
+            <button
+              onClick={closeAsciiCam}
+              aria-label="Close ASCII webcam"
+              className="cursor-pointer border border-[#7a5a20] bg-transparent px-4 py-1 font-mono text-xs uppercase tracking-widest text-[#e8a840] transition-all duration-200 hover:border-[#e8a840] hover:shadow-[0_0_8px_rgba(232,168,64,0.3)]"
+            >
+              ✕ close
+            </button>
+          </div>
+
+          <iframe
+            src="/ascii-webcam.html"
+            className="w-full flex-1 border-0"
+            title="ASCII Webcam"
+            allow="camera"
+          />
+        </div>,
+        document.body
+      )}
+
       <div className="relative" style={{ overflow: "visible" }}>
         <svg ref={svgRef} className="mx-auto block" />
 
