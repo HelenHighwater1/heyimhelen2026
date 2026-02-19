@@ -288,7 +288,7 @@ export function TechDiagram() {
           </div>
 
           <iframe
-            src="/ascii-webcam.html"
+            src="/ascii-webcam"
             className="w-full flex-1 border-0"
             title="ASCII Webcam"
             allow="camera"
