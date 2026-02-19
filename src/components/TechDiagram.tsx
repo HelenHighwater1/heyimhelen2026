@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { LoadBalancerOverlay } from "./LoadBalancerOverlay";
 
 interface TechBox {
   id: string;
@@ -47,6 +48,7 @@ export function TechDiagram() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [boxPositions, setBoxPositions] = useState<Record<string, BoxPosition>>({});
   const [showAsciiCam, setShowAsciiCam] = useState(false);
+  const [showLoadBalancer, setShowLoadBalancer] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -54,6 +56,11 @@ export function TechDiagram() {
   const closeAsciiCam = useCallback(() => setShowAsciiCam(false), []);
   const openAsciiCamRef = useRef(openAsciiCam);
   openAsciiCamRef.current = openAsciiCam;
+
+  const openLoadBalancer = useCallback(() => setShowLoadBalancer(true), []);
+  const closeLoadBalancer = useCallback(() => setShowLoadBalancer(false), []);
+  const openLoadBalancerRef = useRef(openLoadBalancer);
+  openLoadBalancerRef.current = openLoadBalancer;
 
   useEffect(() => {
     if (!showAsciiCam) return;
@@ -167,6 +174,9 @@ export function TechDiagram() {
         if (box.id === "frontend") {
           hitArea.addEventListener("click", () => openAsciiCamRef.current());
         }
+        if (box.id === "backend") {
+          hitArea.addEventListener("click", () => openLoadBalancerRef.current());
+        }
         hitArea.addEventListener("mouseenter", () => {
           setHoveredBox(box.id);
           group.style.transform = "translateY(-2px)";
@@ -266,6 +276,11 @@ export function TechDiagram() {
 
   return (
     <div ref={containerRef} className="w-full">
+      {mounted && showLoadBalancer && createPortal(
+        <LoadBalancerOverlay onClose={closeLoadBalancer} />,
+        document.body
+      )}
+
       {mounted && showAsciiCam && createPortal(
         <div
           className="animate-fade-in fixed inset-0 z-[9999] flex flex-col bg-black"
