@@ -47,6 +47,8 @@ export function TechDiagram() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [boxPositions, setBoxPositions] = useState<Record<string, BoxPosition>>({});
   const [showAsciiCam, setShowAsciiCam] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const openAsciiCam = useCallback(() => setShowAsciiCam(true), []);
   const closeAsciiCam = useCallback(() => setShowAsciiCam(false), []);
@@ -264,7 +266,7 @@ export function TechDiagram() {
 
   return (
     <div ref={containerRef} className="w-full">
-      {showAsciiCam && typeof document !== "undefined" && createPortal(
+      {mounted && showAsciiCam && createPortal(
         <div
           className="animate-fade-in fixed inset-0 z-[9999] flex flex-col bg-black"
           role="dialog"
