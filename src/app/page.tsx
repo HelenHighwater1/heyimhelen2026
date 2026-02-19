@@ -54,8 +54,16 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Contact links */}
+      {/* Tech stack diagram */}
       <div className="mb-14">
+        <h2 className="mb-5 font-sketch text-base text-sketch-text">
+          tech stack
+        </h2>
+        <TechDiagram />
+      </div>
+
+      {/* Contact links */}
+      <div>
         <h2 className="mb-4 font-sketch text-base text-sketch-text">
           get in touch
         </h2>
@@ -77,14 +85,6 @@ export default function HomePage() {
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* Tech stack diagram */}
-      <div>
-        <h2 className="mb-5 font-sketch text-base text-sketch-text">
-          tech stack
-        </h2>
-        <TechDiagram />
       </div>
     </SketchPanel>
   );
