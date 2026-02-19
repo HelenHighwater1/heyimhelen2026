@@ -14,7 +14,7 @@ export const projects: Project[] = [
       "A wine cellar tracking app for managing aging schedules, tasting notes, and historical tasting data. Built to solve a real problem — keeping track of which anniversary wines to open and when.",
     technologies: ["Python", "Flask", "SQLAlchemy", "PostgreSQL", "React", "JavaScript", "Bootstrap"],
     github: "https://github.com/HelenHighwater1/pourfolio",
-    liveDemo: "https://pourfolio-11st.onrender.com/",
+    liveDemo: "https://pourfolio.io",
     videoDemo: "https://www.youtube.com/watch?v=FUDEdX5lmZ0",
   },
   {
