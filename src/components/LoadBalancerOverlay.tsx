@@ -60,8 +60,8 @@ const TASK_DEFS: { type: TaskType; label: string; complexity: string; hint: stri
   { type: "ping", label: "ping", complexity: "trivial", hint: "~200ms" },
   { type: "image_resize", label: "image resize", complexity: "medium", hint: "~1–2s" },
   { type: "ml_inference", label: "ml inference", complexity: "heavy", hint: "~3–5s" },
-  { type: "batch_export", label: "batch export", complexity: "heavy", hint: "~6–9s" },
-  { type: "db_migration", label: "db migration", complexity: "unpredictable", hint: "~0.5–8s · unpredictable" },
+  { type: "batch_export", label: "batch export", complexity: "heavy", hint: "~4–7.5s" },
+  { type: "db_migration", label: "db migration", complexity: "unpredictable", hint: "~0.5–6s · unpredictable" },
 ];
 
 const ALGO_LABELS: Record<Algorithm, string> = {
@@ -603,6 +603,14 @@ export function LoadBalancerOverlay({ onClose }: Props) {
         </div>
 
       </div>
+
+      {/* ── Footer note ── */}
+      <p
+        className="flex-shrink-0 px-6 py-2 font-sketch text-sketch-text-muted"
+        style={{ fontSize: "10px", opacity: 0.45, borderTop: "1px solid #e0deda" }}
+      >
+        task durations are capped to keep requests within free-tier serverless function time limits
+      </p>
     </div>
   );
 }

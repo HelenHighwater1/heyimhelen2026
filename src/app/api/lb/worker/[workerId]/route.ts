@@ -1,11 +1,15 @@
+// Tell Vercel/Next.js to allow up to 30s for this route (requires Pro plan;
+// on Hobby the hard cap is 10s, so task durations are kept within that window).
+export const maxDuration = 30;
+
 const inFlight = new Map<string, number>();
 
 const DURATIONS: Record<string, [number, number]> = {
   ping: [150, 300],
   image_resize: [1200, 1800],
   ml_inference: [3000, 5000],
-  batch_export: [6000, 9000],
-  db_migration: [500, 8000],
+  batch_export: [4000, 7500],
+  db_migration: [500, 6000],
 };
 
 const MAX_IN_FLIGHT = 4;
