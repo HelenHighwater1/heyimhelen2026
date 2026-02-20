@@ -49,6 +49,7 @@ export function TechDiagram() {
   const [boxPositions, setBoxPositions] = useState<Record<string, BoxPosition>>({});
   const [showAsciiCam, setShowAsciiCam] = useState(false);
   const [showLoadBalancer, setShowLoadBalancer] = useState(false);
+  const [showDBDoggo, setShowDBDoggo] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -62,12 +63,24 @@ export function TechDiagram() {
   const openLoadBalancerRef = useRef(openLoadBalancer);
   openLoadBalancerRef.current = openLoadBalancer;
 
+  const openDBDoggo = useCallback(() => setShowDBDoggo(true), []);
+  const closeDBDoggo = useCallback(() => setShowDBDoggo(false), []);
+  const openDBDoggoRef = useRef(openDBDoggo);
+  openDBDoggoRef.current = openDBDoggo;
+
   useEffect(() => {
     if (!showAsciiCam) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeAsciiCam(); };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [showAsciiCam, closeAsciiCam]);
+
+  useEffect(() => {
+    if (!showDBDoggo) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeDBDoggo(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showDBDoggo, closeDBDoggo]);
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -177,6 +190,9 @@ export function TechDiagram() {
         if (box.id === "backend") {
           hitArea.addEventListener("click", () => openLoadBalancerRef.current());
         }
+        if (box.id === "database") {
+          hitArea.addEventListener("click", () => openDBDoggoRef.current());
+        }
         hitArea.addEventListener("mouseenter", () => {
           setHoveredBox(box.id);
           group.style.transform = "translateY(-2px)";
@@ -278,6 +294,29 @@ export function TechDiagram() {
     <div ref={containerRef} className="w-full">
       {mounted && showLoadBalancer && createPortal(
         <LoadBalancerOverlay onClose={closeLoadBalancer} />,
+        document.body
+      )}
+
+      {mounted && showDBDoggo && createPortal(
+        <div
+          className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={closeDBDoggo}
+        >
+          <div
+            className="flex flex-col items-center gap-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/DBDoggo.png"
+              alt="DBDoggo"
+              className="max-h-[85vh] max-w-[90vw] rounded object-contain shadow-2xl"
+            />
+            <p className="font-sketch text-sm text-white/90 text-center max-w-[90vw]">
+              I&apos;ve got my best collegue working on something cool - stay tuned!
+            </p>
+          </div>
+        </div>,
         document.body
       )}
 
