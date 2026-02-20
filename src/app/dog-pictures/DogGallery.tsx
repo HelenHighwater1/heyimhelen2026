@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Masonry from "react-masonry-css";
 import { dogPhotos } from "@/content/dogPictures";
 
@@ -13,6 +14,8 @@ const breakpointColumns = {
 export function DogGallery() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (selectedIndex === null) return;
@@ -90,7 +93,7 @@ export function DogGallery() {
       </Masonry>
 
       {/* Lightbox */}
-      {selectedPhoto !== null && selectedIndex !== null && (
+      {mounted && selectedPhoto !== null && selectedIndex !== null && createPortal(
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 animate-fade-in"
           onClick={() => setSelectedIndex(null)}
@@ -138,7 +141,8 @@ export function DogGallery() {
           >
             →
           </button>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
