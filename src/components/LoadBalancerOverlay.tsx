@@ -4,18 +4,18 @@ import { useReducer, useCallback, useRef, useEffect } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type TaskType =
+export type TaskType =
   | "ping"
   | "image_resize"
   | "ml_inference"
   | "batch_export"
   | "db_migration";
 
-type Algorithm = "round-robin" | "least-connections" | "weighted";
+export type Algorithm = "round-robin" | "least-connections" | "weighted";
 
-type TaskStatus = "pending" | "done" | "error";
+export type TaskStatus = "pending" | "done" | "error";
 
-interface Task {
+export interface Task {
   id: string;
   type: TaskType;
   label: string;
@@ -27,21 +27,21 @@ interface Task {
   retried?: boolean;
 }
 
-interface LogEntry {
+export interface LogEntry {
   id: string;
   text: string;
   timestamp: number;
   ok: boolean;
 }
 
-interface State {
+export interface State {
   tasks: Task[];
   algorithm: Algorithm;
   rrIndex: number;
   log: LogEntry[];
 }
 
-type Action =
+export type Action =
   | { type: "DISPATCH"; task: Task }
   | { type: "COMPLETE"; taskId: string; processingMs: number; completedAt: number; queueDepth: number; worker: string }
   | { type: "FAIL"; taskId: string; reason: string }
@@ -78,7 +78,7 @@ const ALGO_DESCRIPTIONS: Record<Algorithm, string> = {
 
 // ─── Reducer ──────────────────────────────────────────────────────────────────
 
-function reducer(state: State, action: Action): State {
+export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "DISPATCH":
       return { ...state, tasks: [...state.tasks, action.task] };
@@ -129,7 +129,7 @@ function reducer(state: State, action: Action): State {
 
 // ─── Load balancer logic ──────────────────────────────────────────────────────
 
-function selectWorker(
+export function selectWorker(
   algorithm: Algorithm,
   rrIndex: number,
   inFlight: Record<string, number>

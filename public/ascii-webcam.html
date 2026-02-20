@@ -102,6 +102,14 @@
     flex-shrink: 0;
   }
 
+  #controls .btn-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+  }
+
   .control-value {
     color: #e8a840;
     min-width: 22px;
@@ -196,13 +204,12 @@
 
   <div class="divider"></div>
 
-  <button id="invertBtn">Invert</button>
-  <button id="colorBtn">Color</button>
-  <button id="edgeBtn">Edges</button>
+  <div class="btn-group">
+    <button id="invertBtn">Invert</button>
+    <button id="colorBtn">Color</button>
+    <button id="edgeBtn">Edges</button>
+  </div>
 
-  <div class="divider"></div>
-
-  <button id="copyBtn">Copy</button>
 </div>
 
 <!-- Output area: holds both the mono <pre> and the color <canvas> -->
@@ -238,7 +245,6 @@ const rampSelect  = document.getElementById('rampSelect');
 const invertBtn   = document.getElementById('invertBtn');
 const colorBtn    = document.getElementById('colorBtn');
 const edgeBtn     = document.getElementById('edgeBtn');
-const copyBtn     = document.getElementById('copyBtn');
 
 const colsValue = document.getElementById('colsValue');
 const fontValue = document.getElementById('fontValue');
@@ -256,17 +262,26 @@ const RAMPS = {
 // ─────────────────────────────────────────────
 // Settings (mutable state)
 // ─────────────────────────────────────────────
-let cols       = 200;
-let rows       = 56;
-let fontSize   = 12;
+const isMobileScreen = window.innerWidth < 600;
+
+let cols       = isMobileScreen ? 80 : 200;
+let rows       = isMobileScreen ? 24 : 56;
+let fontSize   = isMobileScreen ? 8  : 12;
 let targetFPS  = 15;
 let ramp       = RAMPS.medium;
 let inverted   = false;
 let colorMode  = false;
 let edgeMode   = false;
 
-// Stores the last plain-text ASCII frame for clipboard copy in either mode
-let lastAsciiText = '';
+// Sync sliders to match the (possibly mobile-adjusted) initial values
+colsSlider.value = String(cols);
+colsValue.textContent = String(cols);
+fontSlider.value = String(fontSize);
+fontValue.textContent = String(fontSize);
+if (isMobileScreen) {
+  colsSlider.max = '150';
+  fontSlider.max = '12';
+}
 
 let videoWidth    = 0;
 let videoHeight   = 0;
@@ -420,7 +435,6 @@ function buildAscii(imageData, brightness) {
     if (y < rows - 1) result += '\n';
   }
 
-  lastAsciiText = result;
   return result;
 }
 
@@ -466,7 +480,6 @@ function drawColorAscii(imageData, brightness) {
     textRows.push(textRow);
   }
 
-  lastAsciiText = textRows.join('\n');
 }
 
 // ─────────────────────────────────────────────
@@ -513,24 +526,6 @@ colorBtn.addEventListener('click', () => {
 edgeBtn.addEventListener('click', () => {
   edgeMode = !edgeMode;
   edgeBtn.classList.toggle('active', edgeMode);
-});
-
-copyBtn.addEventListener('click', async () => {
-  const text = colorMode ? lastAsciiText : asciiPre.textContent;
-  if (!text) return;
-  try {
-    await navigator.clipboard.writeText(text);
-    copyBtn.textContent = 'Copied!';
-    copyBtn.classList.add('active');
-    setTimeout(() => {
-      copyBtn.textContent = 'Copy';
-      copyBtn.classList.remove('active');
-    }, 1500);
-  } catch (err) {
-    console.error('Clipboard error:', err);
-    copyBtn.textContent = 'Error';
-    setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1500);
-  }
 });
 
 // Responsive: recalculate on window resize
