@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import { FlowchartNav } from "@/components/FlowchartNav";
 
 const sansFont = Inter({
@@ -78,6 +79,7 @@ export default function RootLayout({
             &copy; 2026 Helen Highwater &middot; sketched with care
           </footer>
         </div>
+        <Analytics />
       </body>
     </html>
   );
