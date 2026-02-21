@@ -11,6 +11,9 @@ out/
 next-env.d.ts
 .env*.local
 
+# Test artifacts
+test-results/
+
 # IDE / OS
 .DS_Store
 *.log

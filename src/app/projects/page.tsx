@@ -49,17 +49,30 @@ export default function ProjectsPage() {
 
                 {/* Links */}
                 <div className="mt-4 flex flex-wrap gap-5">
-                  {project.liveDemo && (
-                    <a
-                      href={project.liveDemo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="sketch-link font-sketch text-sm"
-                      style={{ color: "var(--sketch-green)" }}
-                    >
-                      try it out &rarr;
-                    </a>
-                  )}
+                  {project.liveDemos
+                    ? project.liveDemos.map((demo) => (
+                        <a
+                          key={demo.url}
+                          href={demo.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="sketch-link font-sketch text-sm"
+                          style={{ color: "var(--sketch-green)" }}
+                        >
+                          {demo.label} &rarr;
+                        </a>
+                      ))
+                    : project.liveDemo && (
+                        <a
+                          href={project.liveDemo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="sketch-link font-sketch text-sm"
+                          style={{ color: "var(--sketch-green)" }}
+                        >
+                          try it out &rarr;
+                        </a>
+                      )}
                   {project.github && (
                     <a
                       href={project.github}

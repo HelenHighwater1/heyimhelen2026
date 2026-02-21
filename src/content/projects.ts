@@ -4,6 +4,7 @@ export interface Project {
   technologies: string[];
   github?: string;
   liveDemo?: string;
+  liveDemos?: Array<{ label: string; url: string }>;
   videoDemo?: string;
 }
 
@@ -20,14 +21,18 @@ export const projects: Project[] = [
   {
     name: "What If Machine",
     description:
-      "Inspired by Professor Farnsworth's What If Machine from Futurama — ask hypothetical questions and get AI-generated answers powered by the OpenAI API.",
+      "Inspired by Professor Farnsworth's What If Machine from Futurama — ask hypothetical questions and get AI-generated answers powered by AI.",
     technologies: ["React", "JavaScript", "OpenAI API", "React Router", "Bootstrap"],
     github: "https://github.com/HelenHighwater1/FarnsworthsWhatIf",
+    liveDemos: [
+      { label: "v1 (2022 - hand-crafted and locally sourced, baby)", url: "https://farnsworthswhatif-production.up.railway.app" },
+      { label: "v2 (2026 - one-shot with cursor)", url: "https://whatifv2-git-main-helenhighwaters-projects.vercel.app/" },
+    ],
   },
   {
     name: "Olaf's Escape",
     description:
-      "A browser-based side-scrolling game built with vanilla JavaScript and HTML Canvas. Navigate Olaf through obstacles to escape.",
+      "A browser-based side-scrolling game based on the Lost Vikings, built with vanilla JavaScript and HTML Canvas. Navigate Olaf through obstacles to escape.",
     technologies: ["JavaScript", "HTML Canvas", "SCSS"],
     github: "https://github.com/HelenHighwater1/Olafs-Escape/",
   },
