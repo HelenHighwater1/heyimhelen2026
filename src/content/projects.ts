@@ -13,7 +13,7 @@ export const projects: Project[] = [
   {
     name: "Presidio Vibes",
     description:
-      "Interactive ambient dashboard for the Presidio: live weather, tides, surf conditions, and a community workspace board.",
+      "Interactive ambient dashboard for the Presidio: lofi beats, live weather, tides, surf conditions, and a community workspace board.",
     technologies: ["JavaScript", "HTML", "CSS", "Supabase", "Netlify"],
     github: "https://github.com/HelenHighwater1/presidio-vibes",
     liveDemo: "https://presidio-vibes.com/",

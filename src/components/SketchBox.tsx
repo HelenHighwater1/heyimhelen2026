@@ -7,6 +7,7 @@ interface SketchBoxProps {
   className?: string;
   strokeColor?: string;
   roughness?: number;
+  padding?: string;
 }
 
 export function SketchBox({
@@ -14,6 +15,7 @@ export function SketchBox({
   className = "",
   strokeColor = "#1e1e1e",
   roughness = 1.0,
+  padding = "p-5 md:p-6",
 }: SketchBoxProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -67,7 +69,7 @@ export function SketchBox({
         className="pointer-events-none absolute inset-0 z-0"
         aria-hidden
       />
-      <div className="relative z-10 p-5 md:p-6">{children}</div>
+      <div className={`relative z-10 ${padding}`}>{children}</div>
     </div>
   );
 }

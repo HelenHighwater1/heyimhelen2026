@@ -34,14 +34,24 @@ export default function ProjectsPage() {
 
                 <div className="mt-3 flex gap-4">
                   {project.image && (
-                    <div className="aspect-square w-24 shrink-0 overflow-hidden rounded border border-[var(--sketch-stroke-light)] md:w-28">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={project.image}
-                        alt={`${project.name} screenshot`}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
+                    <div className="w-24 shrink-0 md:w-28">
+                      <SketchBox
+                        strokeColor={
+                          ["#4a90d9", "#6ba368", "#e07a5f", "#8b5cf6", "#d4a843"][idx % 5]
+                        }
+                        roughness={0.8}
+                        padding="p-1"
+                      >
+                        <div className="aspect-square overflow-hidden rounded-sm">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={project.image}
+                            alt={`${project.name} screenshot`}
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      </SketchBox>
                     </div>
                   )}
 
