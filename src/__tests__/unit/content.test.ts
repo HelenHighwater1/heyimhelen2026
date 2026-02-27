@@ -84,6 +84,15 @@ describe("projects", () => {
       expect(isValidUrl(project.videoDemo)).toBe(true);
     }
   });
+
+  it.each(projects)("$name — image when present is a path starting with / and has image extension", (project: Project) => {
+    if (project.image) {
+      expect(typeof project.image).toBe("string");
+      expect(project.image.trim().length).toBeGreaterThan(0);
+      expect(project.image).toMatch(/^\//);
+      expect(project.image).toMatch(/\.(png|jpg|jpeg|gif|webp|avif)$/i);
+    }
+  });
 });
 
 describe("bioItems", () => {

@@ -31,69 +31,84 @@ export default function ProjectsPage() {
                 <h2 className="font-sketch text-base leading-relaxed text-sketch-text md:text-lg">
                   {project.name}
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-sketch-text-muted">
-                  {project.description}
-                </p>
 
-                {/* Tech tags */}
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.technologies.map((tech, ti) => (
-                    <span
-                      key={tech}
-                      className={`sketch-tag ${tagColors[ti % tagColors.length]}`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+                <div className="mt-3 flex gap-4">
+                  {project.image && (
+                    <div className="aspect-square w-24 shrink-0 overflow-hidden rounded border border-[var(--sketch-stroke-light)] md:w-28">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={project.image}
+                        alt={`${project.name} screenshot`}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
 
-                {/* Links */}
-                <div className="mt-4 flex flex-wrap gap-5">
-                  {project.liveDemos
-                    ? project.liveDemos.map((demo) => (
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm leading-relaxed text-sketch-text-muted">
+                      {project.description}
+                    </p>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {project.technologies.map((tech, ti) => (
+                        <span
+                          key={tech}
+                          className={`sketch-tag ${tagColors[ti % tagColors.length]}`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap gap-5">
+                      {project.liveDemos
+                        ? project.liveDemos.map((demo) => (
+                            <a
+                              key={demo.url}
+                              href={demo.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="sketch-link font-sketch text-sm"
+                              style={{ color: "var(--sketch-green)" }}
+                            >
+                              {demo.label} &rarr;
+                            </a>
+                          ))
+                        : project.liveDemo && (
+                            <a
+                              href={project.liveDemo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="sketch-link font-sketch text-sm"
+                              style={{ color: "var(--sketch-green)" }}
+                            >
+                              try it out &rarr;
+                            </a>
+                          )}
+                      {project.github && (
                         <a
-                          key={demo.url}
-                          href={demo.url}
+                          href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="sketch-link font-sketch text-sm"
-                          style={{ color: "var(--sketch-green)" }}
                         >
-                          {demo.label} &rarr;
-                        </a>
-                      ))
-                    : project.liveDemo && (
-                        <a
-                          href={project.liveDemo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="sketch-link font-sketch text-sm"
-                          style={{ color: "var(--sketch-green)" }}
-                        >
-                          try it out &rarr;
+                          view code &rarr;
                         </a>
                       )}
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="sketch-link font-sketch text-sm"
-                    >
-                      view code &rarr;
-                    </a>
-                  )}
-                  {project.videoDemo && (
-                    <a
-                      href={project.videoDemo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="sketch-link font-sketch text-sm"
-                      style={{ color: "var(--sketch-coral)" }}
-                    >
-                      video demo &rarr;
-                    </a>
-                  )}
+                      {project.videoDemo && (
+                        <a
+                          href={project.videoDemo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="sketch-link font-sketch text-sm"
+                          style={{ color: "var(--sketch-coral)" }}
+                        >
+                          video demo &rarr;
+                        </a>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </SketchBox>
             </li>

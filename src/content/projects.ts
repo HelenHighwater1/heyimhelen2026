@@ -6,6 +6,7 @@ export interface Project {
   liveDemo?: string;
   liveDemos?: Array<{ label: string; url: string }>;
   videoDemo?: string;
+  image?: string;
 }
 
 export const projects: Project[] = [
@@ -17,6 +18,7 @@ export const projects: Project[] = [
     github: "https://github.com/HelenHighwater1/pourfolio",
     liveDemo: "https://pourfolio.io",
     videoDemo: "https://www.youtube.com/watch?v=FUDEdX5lmZ0",
+    image: "/assets/projects/pourfolio.png",
   },
   {
     name: "What If Machine",
@@ -28,6 +30,7 @@ export const projects: Project[] = [
       { label: "v1 (2022 - hand-crafted and locally sourced, baby)", url: "https://farnsworthswhatif-production.up.railway.app" },
       { label: "v2 (2026 - one-shot with cursor)", url: "https://whatifv2-git-main-helenhighwaters-projects.vercel.app/" },
     ],
+    image: "/assets/projects/what-if-machine.png",
   },
   {
     name: "Olaf's Escape",
@@ -35,6 +38,7 @@ export const projects: Project[] = [
       "A browser-based side-scrolling game based on the Lost Vikings, built with vanilla JavaScript and HTML Canvas. Navigate Olaf through obstacles to escape.",
     technologies: ["JavaScript", "HTML Canvas", "SCSS"],
     github: "https://github.com/HelenHighwater1/Olafs-Escape/",
+    image: "/assets/projects/olafs-escape.png",
   },
   {
     name: "UNTAPPD Vintage",
@@ -42,6 +46,7 @@ export const projects: Project[] = [
       "A full-stack clone of Untappd with a vintage aesthetic for discovering, rating, and logging craft beers. Features user auth, search, and filtering.",
     technologies: ["React", "Redux", "Ruby on Rails", "PostgreSQL", "AWS S3"],
     github: "https://github.com/HelenHighwater1/untappedVintage/",
+    image: "/assets/projects/untapped-vintage.png",
   },
   {
     name: "Flip Up",
@@ -49,5 +54,6 @@ export const projects: Project[] = [
       "A collaborative card-flipping memory game with user authentication, styled-components, and a carousel UI. Built as a team project with a MERN stack.",
     technologies: ["React", "Redux", "Node.js", "Express", "MongoDB", "Passport"],
     github: "https://github.com/amandac3600/Flip_Up/",
+    image: "/assets/projects/flip-up.png",
   },
 ];
