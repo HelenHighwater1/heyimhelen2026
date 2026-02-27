@@ -11,6 +11,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: "Presidio Vibes",
+    description:
+      "Interactive ambient dashboard for the Presidio: live weather, tides, surf conditions, and a community workspace board.",
+    technologies: ["JavaScript", "HTML", "CSS", "Supabase", "Netlify"],
+    github: "https://github.com/HelenHighwater1/presidio-vibes",
+    liveDemo: "https://presidio-vibes.com/",
+    image: "/assets/projects/presidio-vibes.png",
+  },
+  {
     name: "PourFolio",
     description:
       "A wine cellar tracking app for managing aging schedules, tasting notes, and historical tasting data. Built to solve a real problem — keeping track of which anniversary wines to open and when.",
