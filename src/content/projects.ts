@@ -11,6 +11,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: "Plain Language Medical Records",
+    description:
+      "Demo that explores LLMs in healthcare. App turns clinical medical documents into plain-language summaries with staged cards and suggested questions for your next appointment. Users can ask questions related to medical documents. RAG pipeline coming soon.",
+    technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Anthropic Claude API", "pdf-parse", "mailparser", "jsPDF"],
+    github: "https://github.com/HelenHighwater1/medical-ai-assistent",
+    liveDemo: "https://medical-ai-assistent.vercel.app/",
+    image: "/assets/projects/medical-ai-assistant.png",
+  },
+  {
     name: "Presidio Vibes",
     description:
       "Interactive ambient dashboard for the Presidio: lofi beats, live weather, tides, surf conditions, and a community workspace board.",
