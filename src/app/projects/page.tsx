@@ -43,13 +43,30 @@ export default function ProjectsPage() {
                         padding="p-1"
                       >
                         <div className="aspect-square overflow-hidden rounded-sm">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={project.image}
-                            alt={`${project.name} screenshot`}
-                            className="h-full w-full object-cover"
-                            loading="lazy"
-                          />
+                          {(project.liveDemo ?? (project.liveDemos?.[1] ?? project.liveDemos?.[0])?.url) ? (
+                            <a
+                              href={project.liveDemo ?? (project.liveDemos?.[1] ?? project.liveDemos?.[0])?.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block h-full w-full"
+                            >
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={project.image}
+                                alt={`${project.name} screenshot`}
+                                className="h-full w-full object-cover"
+                                loading="lazy"
+                              />
+                            </a>
+                          ) : (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img
+                              src={project.image}
+                              alt={`${project.name} screenshot`}
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                          )}
                         </div>
                       </SketchBox>
                     </div>
