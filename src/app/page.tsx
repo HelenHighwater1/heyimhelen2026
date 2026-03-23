@@ -1,6 +1,8 @@
+import { BlogTeaser } from "@/components/BlogTeaser";
 import { SketchPanel } from "@/components/SketchPanel";
 import { TechDiagram } from "@/components/TechDiagram";
 import { profile } from "@/content/profile";
+import latestPost from "../../public/latest-post.json";
 
 const contactLinks = [
   {
@@ -62,29 +64,33 @@ export default function HomePage() {
         <TechDiagram />
       </div>
 
-      {/* Contact links */}
-      <div>
-        <h2 className="mb-4 font-sketch text-base text-sketch-text">
-          get in touch
-        </h2>
-        <ul className="flex flex-wrap gap-4">
-          {contactLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-                rel={
-                  link.href.startsWith("mailto:")
-                    ? undefined
-                    : "noopener noreferrer"
-                }
-                className={`btn-sketch inline-flex items-center gap-2 font-sketch text-sm ${link.color} ${link.borderColor} border-2`}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+      {/* Contact links + blog teaser — side by side on md+ */}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start">
+        <div>
+          <h2 className="mb-4 font-sketch text-base text-sketch-text">
+            get in touch
+          </h2>
+          <ul className="flex flex-wrap gap-4">
+            {contactLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                  rel={
+                    link.href.startsWith("mailto:")
+                      ? undefined
+                      : "noopener noreferrer"
+                  }
+                  className={`btn-sketch inline-flex items-center gap-2 font-sketch text-sm ${link.color} ${link.borderColor} border-2`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <BlogTeaser {...latestPost} />
       </div>
     </SketchPanel>
   );

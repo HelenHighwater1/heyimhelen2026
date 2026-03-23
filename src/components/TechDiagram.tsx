@@ -387,7 +387,7 @@ export function TechDiagram() {
       <div className="h-8" />
 
       <p className="text-center font-sketch text-xs text-sketch-text-muted">
-        hover over a box to see technologies
+        hover over a box to see technologies, or click for something fun
       </p>
     </div>
   );
