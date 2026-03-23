@@ -30,7 +30,16 @@ export function BlogTeaser({
         id="blog-teaser-heading"
         className="mb-4 font-sketch text-base text-sketch-text"
       >
-        latest from the blog
+        latest from the{" "}
+        <a
+          href="https://anyway-i-shipped-it.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="sketch-link"
+          style={{ color: "var(--sketch-blue)" }}
+        >
+          blog
+        </a>
       </h2>
       {/* Outer sketch frame around thumbnail + copy */}
       <SketchBox
