@@ -11,6 +11,24 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: "Inn-to-Inn Planner",
+    description:
+      "Interactive planner for hiking Scotland's long-distance trails inn to inn — currently the Speyside Way and Great Glen Way. Pick overnight stops on the map and it builds a day-by-day itinerary with distances, climbing, lodging, and food stops. Distillery layer included, obviously.",
+    technologies: ["React", "TypeScript", "Vite", "MapLibre GL", "OpenStreetMap", "Vercel"],
+    github: "https://github.com/HelenHighwater1/inn-to-inn-planner",
+    liveDemo: "https://inn-to-inn.com",
+    image: "/assets/projects/inn-to-inn.png",
+  },
+  {
+    name: "GrooveVault",
+    description:
+      "Vinyl collection tracker dressed in full art deco — a listening ritual, not a database. Catalog your records, scan them in by barcode, and rediscover what's been sitting on the shelf.",
+    technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Clerk", "Supabase", "Fly.io"],
+    github: "https://github.com/HelenHighwater1/GrooveVault",
+    liveDemo: "https://mygroovevault.com",
+    image: "/assets/projects/mygroovevault.png",
+  },
+  {
     name: "Plain Language Medical Records",
     description:
       "Demo that explores LLMs in healthcare. App turns clinical medical documents into plain-language summaries with staged cards and suggested questions for your next appointment. Users can ask questions related to medical documents. RAG pipeline coming soon.",
