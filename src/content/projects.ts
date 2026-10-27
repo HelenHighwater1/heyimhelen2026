@@ -13,7 +13,7 @@ export const projects: Project[] = [
   {
     name: "Inn-to-Inn Planner",
     description:
-      "Interactive planner for hiking Scotland's long-distance trails inn to inn — currently the Speyside Way and Great Glen Way. Pick overnight stops on the map and it builds a day-by-day itinerary with distances, climbing, lodging, and food stops. Distillery layer included, obviously.",
+      "My other half and I are doing inn-to-inn trekking in the Scottish Highlands next year, just a little tool to help us plan it. Distillery layer included ;) ",
     technologies: ["React", "TypeScript", "Vite", "MapLibre GL", "OpenStreetMap", "Vercel"],
     github: "https://github.com/HelenHighwater1/inn-to-inn-planner",
     liveDemo: "https://inn-to-inn.com",
@@ -22,7 +22,7 @@ export const projects: Project[] = [
   {
     name: "GrooveVault",
     description:
-      "Vinyl collection tracker dressed in full art deco — a listening ritual, not a database. Catalog your records, scan them in by barcode, and rediscover what's been sitting on the shelf.",
+      "I have a lot of vinyl, and I want to change how its organized, but it seemed like a big ask... so I automated it!! Fun way to try out Clerk for the first time.",
     technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Clerk", "Supabase", "Fly.io"],
     github: "https://github.com/HelenHighwater1/GrooveVault",
     liveDemo: "https://mygroovevault.com",
